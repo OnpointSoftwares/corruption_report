@@ -1,0 +1,44 @@
+<!-- report/post_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Post List</h1>
+    <div class="list-group mt-3">
+        {% for post in posts %}
+            <div class="list-group-item">
+                <table>
+                    <tr>
+                        <td><h3>{{ post.title }}</h3></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if post.file %}
+                                {% if post.file_type == 'picture' %}
+                                    <img src="{{ post.file.url }}" alt="{{ post.title }}" class="img-fluid mb-3">
+                                {% elif post.file_type == 'video' %}
+                                    <video src="{{ post.file.url }}" controls class="img-fluid mb-3"></video>
+                                {% elif post.file_type == 'audio' %}
+                                    <audio src="{{ post.file.url }}" controls class="mb-3"></audio>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>{{ post.description }}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p><strong>Created at:</strong> {{ post.created_at }}</p></td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

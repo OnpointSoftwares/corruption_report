@@ -1,0 +1,71 @@
+<!-- report/view_media.html -->
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block styles %}
+{% load static %}
+<style>
+      .action-row {
+        text-align: right;
+      }
+    body {
+        background-image: url("{% static 'report/static/images/court.png' %}"), linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container" style="background-color: #1d663b;">
+    <h1 class="mt-5">Post List</h1>
+    <div class="list-group mt-3">
+        {% for post in posts %}
+            <div class="list-group-item">
+                <table>
+                    <tr>
+                        <td><a href="{% url 'post_detail' post.id %}"><h3>{{ post.title }}</h3></a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if post.file %}
+                                {% if post.file_type == 'picture' %}
+                                    <img src="{{ post.file.url }}" alt="{{ post.title }}" class="img-fluid mb-3">
+                                {% elif post.file_type == 'video' %}
+                                    <video src="{{ post.file.url }}" controls class="img-fluid mb-3"></video>
+                                {% elif post.file_type == 'audio' %}
+                                    <audio src="{{ post.file.url }}" controls class="mb-3"></audio>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                {{ post.short_description }}
+                                {% if post.description|length > 100 %}
+                                    <a href="{% url 'post_detail' post.id %}">Read more</a>
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="action-row">
+                        <td>
+                            <select onchange="window.location.href=this.value;">
+                                <option value="#">Choose an action</option>
+                                <option value="{% url 'post_detail' post.id %}">Chat</option>
+                                <option value="{% url 'create_post' %}">Create New Post</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
